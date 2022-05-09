@@ -29,7 +29,8 @@ public class View extends JFrame {
 	//creamos un array list de botones y colores
 	ArrayList<Color> listaColores = new ArrayList<Color>();
 	ArrayList<JToggleButton> listaBotonesParejas = new ArrayList<JToggleButton>();
-	
+	//true primera tirada, false segunda y se comprueba
+	boolean turno = true;
 	
 	public View() {
 		
@@ -44,9 +45,14 @@ public class View extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//cargamos el array de colores
-				
-				
+				//funcion turno, le pasamos por parametro el toglebutton casteado
+				if(turno) {
+					turno = false;
+				}else {
+					//metodo para ver si la pareja coincide
+					verSiCoinciden();
+				}
+
 			}
 		};
 		//1) Botones JToggleButton perfectamente distribuidos
@@ -93,11 +99,12 @@ public class View extends JFrame {
 			}while(!comprobarColorRepetido(numero));
 			listaBotonesParejas.get(i).setBackground(listaColores.get(numero));
 			//le damos la vuelta
-			
+			listaBotonesParejas.get(i).setSelected(true);
 		}
 		
 	}
 	
+	//este array va a controlar que no nos excedamos
 	int arrayDeColoresColocados[] = {0,0,0,0,0,0,0,0};
 	
 	//al pulsar cambia de color, hay una parjea para cada una
@@ -111,18 +118,38 @@ public class View extends JFrame {
 		}
 		
 	}
+	//metodo para ver si coinciden con un array dinamico para guardar los botones seleccionados
+	ArrayList<Integer> listaBotonesSeleccionados = new ArrayList<Integer>();
+	public void verSiCoinciden() {
+		//resetamos la lista
+		listaBotonesSeleccionados.clear();
+		
+		for (int i = 0; i < listaBotonesParejas.size(); i++) {
+			if(listaBotonesParejas.get(i).isSelected() == false) {
+				//guardamos en nuestro array dinamico
+				listaBotonesSeleccionados.add(i);
+			}
+		}
+		
+		Color background1 = listaBotonesParejas.get(listaBotonesSeleccionados.get(0)).getBackground();
+		Color background2 = listaBotonesParejas.get(listaBotonesSeleccionados.get(1)).getBackground();
+		//si las dos cartas no son del mismo color, vuelven a girarse
+		if(background1==background2) {
+			//si son del mismo color desaparecen de la pantalla con setVisible(false)
+			//ETREME programming
+			listaBotonesParejas.get(listaBotonesSeleccionados.get(0)).setVisible(false);
+			listaBotonesParejas.get(listaBotonesSeleccionados.get(0)).setSelected(true);
+			listaBotonesParejas.get(listaBotonesSeleccionados.get(0)).setVisible(false);
+			listaBotonesParejas.get(listaBotonesSeleccionados.get(1)).setSelected(true);
+		}else {
+			//se dan la vuelta
+			listaBotonesParejas.get(listaBotonesSeleccionados.get(0)).setSelected(true);
+			listaBotonesParejas.get(listaBotonesSeleccionados.get(1)).setSelected(true);
+		}
+		//finalizamos turno
+		turno = true;
+	}
 	
-	//el jugador solo puede mostrar a la vez
-	
-	//si son del mismo color desaparecen de la pantalla con setVisible(false)
-	
-	//si las dos cartas son del mismo color, vuelven a girarse
-	
-	//ADICIONAL
-	//usar imagenes
-	
-	//contador de intentos
-	
-	//MessageDialog de enhorabuena
+
 	
 }
