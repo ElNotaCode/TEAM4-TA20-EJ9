@@ -139,7 +139,7 @@ public class View extends JFrame {
 			//ETREME programming
 			listaBotonesParejas.get(listaBotonesSeleccionados.get(0)).setVisible(false);
 			listaBotonesParejas.get(listaBotonesSeleccionados.get(0)).setSelected(true);
-			listaBotonesParejas.get(listaBotonesSeleccionados.get(0)).setVisible(false);
+			listaBotonesParejas.get(listaBotonesSeleccionados.get(1)).setVisible(false);
 			listaBotonesParejas.get(listaBotonesSeleccionados.get(1)).setSelected(true);
 		}else {
 			//se dan la vuelta
