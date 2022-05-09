@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
@@ -28,14 +29,9 @@ public class View extends JFrame {
 	//creamos un array list de botones y colores
 	ArrayList<Color> listaColores = new ArrayList<Color>();
 	ArrayList<JToggleButton> listaBotonesParejas = new ArrayList<JToggleButton>();
-	//creo un hash table que se va a usar en el metodo para checkear que no se repiten los colores
-	Hashtable<String,Integer> listaValuesColores = new Hashtable<String,Integer>();
 	
 	
 	public View() {
-		
-		//cargamos el array de colores
-		rellenarArrayColores();
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 480, 480);
@@ -48,12 +44,11 @@ public class View extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				//cargamos el array de colores
 				
 				
 			}
 		};
-		
 		//1) Botones JToggleButton perfectamente distribuidos
 		
 		//añadimos la imagen
@@ -67,15 +62,15 @@ public class View extends JFrame {
 			listaBotonesParejas.get(i).addActionListener(girar);
 		}
 		
-		//pasar por todos los botones de la matriz
-		
-		//mientras los voy pasando tengo que generar un algoritmo que no pasen mas de dos
+		//cargamos el array de colores y randomizamos
+		rellenarArrayColores();
+		randomizadorDeColores();
+		//importante hacerlo despues de cargar los botones
 		
 	}
 	
 	//cargar colores
 	public void rellenarArrayColores() {
-		
 		listaColores.add(Color.blue);
 		listaColores.add(Color.red);
 		listaColores.add(Color.pink);
@@ -87,35 +82,35 @@ public class View extends JFrame {
 	}
 	
 	public void randomizadorDeColores() {
-		
-		int count = 0;
+		//se crea un random
 		Random r = new Random();
+		//el numero que va a guardar el random
 		int numero;
-		//bucle hasta que se rellenen los 16 colores
-		do {
-		//Random r (7)
-		numero = r.nextInt(7);
-		//checkear con otro metodo que haga un control de colores metodo boolan
-		if(comprobarColorRepetido(numero)) {
-			//se añade al array list
-			listaBotonesParejas.get(count).setBackground(listaColores.get(numero));
-			//suma count
-			count++;
+		//se recorre la lista de botones
+		for (int i = 0; i < listaBotonesParejas.size(); i++) {
+			do {
+				numero = r.nextInt(8);
+			}while(!comprobarColorRepetido(numero));
+			listaBotonesParejas.get(i).setBackground(listaColores.get(numero));
+			//le damos la vuelta
 			
 		}
 		
-		}while(count > 16);
 	}
 	
+	int arrayDeColoresColocados[] = {0,0,0,0,0,0,0,0};
+	
+	//al pulsar cambia de color, hay una parjea para cada una
 	public boolean comprobarColorRepetido(int numero) {
 		
-		//aqui se mira que no esté repetido
+		if(arrayDeColoresColocados[numero] < 2 ) {
+			arrayDeColoresColocados[numero]++;
+			return true;
+		}else {
+			return false;
+		}
 		
-		
-		return false;
 	}
-
-	//al pulsar cambia de color, hay una parjea para cada una
 	
 	//el jugador solo puede mostrar a la vez
 	
